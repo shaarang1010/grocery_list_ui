@@ -5,7 +5,7 @@ import Card from 'react-bootstrap/Card';
 import './CardComponent.css';
 
 
-const CardComponent = props => {
+const CardComponent = (props) => {
     return(
         <Card bg={props.background} className='card'>
             <Card.Header>

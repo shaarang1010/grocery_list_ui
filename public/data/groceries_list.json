@@ -1,6 +1,7 @@
 [
     {
         "id": "1",
+        "date": "2/10/2021 Monday",
         "items": [
             {
                 "item": "Soy Milk",
@@ -26,6 +27,7 @@
     },
     {
         "id": "2",
+        "date": "5/7/2021 Monday",
         "items": [
             {
                 "item": "Soy Sauce",
@@ -51,6 +53,7 @@
     },
     {
         "id": "3",
+        "date": "7/9/2021 Monday",
         "items": [
             {
                 "item": "Cat food",

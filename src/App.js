@@ -1,10 +1,12 @@
-import Homepage from './containers/pages/homepage/Homepage';
-import './App.css';
-
+import Homepage from "./containers/pages/homepage/Homepage";
+import "./App.css";
+import { Container } from "react-bootstrap";
 function App() {
   return (
     <div className="App">
-     <Homepage />
+      <Container fluid>
+        <Homepage />
+      </Container>
     </div>
   );
 }
