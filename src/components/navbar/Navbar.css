@@ -1,0 +1,25 @@
+.mr-auto{
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.navbar-light .navbar-brand{
+    color: whitesmoke;
+}
+
+.navbar-light .navbar-nav .nav-link{
+    color: whitesmoke;
+}
+
+.navbar-light .navbar-nav .nav-link:hover{
+    color: whitesmoke;
+}
+
+.active > .nav-link{
+    color: whitesmoke;
+}
+
+
+.navbar-toggler{
+    background-color: whitesmoke;
+}
