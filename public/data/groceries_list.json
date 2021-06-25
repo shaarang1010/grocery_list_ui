@@ -13,7 +13,7 @@
             },
             {
                 "item": "Rice",
-                "completed": false
+                "completed": true
             },
             {
                 "item": "Oranges",
@@ -74,6 +74,32 @@
             {
                 "item": "Bread",
                 "completed": false
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "date": "8/8/2021 Sunday",
+        "items": [
+            {
+                "item": "Dog food",
+                "completed": false
+            },
+            {
+                "item": "Sweet Potatoes",
+                "completed": false
+            },
+            {
+                "item": "Pasta Sauce",
+                "completed": true
+            },
+            {
+                "item": "Avacado",
+                "completed": true
+            },
+            {
+                "item": "Strawberry Jam",
+                "completed": true
             }
         ]
     }

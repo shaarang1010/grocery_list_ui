@@ -17,7 +17,10 @@ import NavComponent from "../../../components/navbar/Navbar";
 
 import CardComponent from "../../../components/card/CardComponent";
 
+import ListComponent from "../../../components/listgroup/ListGroup";
+
 import "./Homepage.css";
+
 class Homepage extends Component {
   constructor() {
     super();
@@ -41,11 +44,14 @@ class Homepage extends Component {
 
   componentDidUpdate() {}
 
+  createRandomName(){
+    const names=["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast"];
+    let randomNumber = Math.floor(Math.random() * 6);
+    return `${names[randomNumber]}_${randomNumber}`;
+  }
+
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
-
-    let element = groceryList.slice(0, 2);
-
     return (
       <Hoc>
         {/*
@@ -65,9 +71,12 @@ class Homepage extends Component {
           </Row>
           <Row>
             {groceryList.map((item) => {
+              let randomName = this.createRandomName();
+              let completedItems = item.items.filter((el)=> el.completed === true);
+              let incompleteItems = item.items.filter((el)=> el.completed === false);
               return (
                 <Col xs={12} md={4}>
-                  <CardComponent header={item.date}>
+                  <CardComponent header={randomName} footerText={"Created on " + item.date}>
                     <Accordion defaultActiveKey="1">
                       <Card>
                         <Card.Header>
@@ -80,15 +89,14 @@ class Homepage extends Component {
                             Bought{" "}
                             <Badge variant="light">
                               {
-                                item.items.filter((el) => el.completed === true)
-                                  .length
+                                completedItems.length
                               }
                             </Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="0">
                           <Card.Body>
-                            Bought{" "}
+                            <ListComponent variant="flush" items={completedItems}></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
@@ -103,15 +111,14 @@ class Homepage extends Component {
                             To be Completed{" "}
                             <Badge variant="light">
                               {
-                                item.items.filter((el) => el.completed === false)
-                                  .length
+                                incompleteItems.length
                               }
                             </Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="1">
                           <Card.Body>
-                            To be Completed{" "}
+                          <ListComponent variant="flush" items={incompleteItems}></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>

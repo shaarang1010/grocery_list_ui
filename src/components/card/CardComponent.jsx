@@ -14,6 +14,9 @@ const CardComponent = (props) => {
             <Card.Body>
                 {props.children}
             </Card.Body>
+            <Card.Footer>
+            <small className="text-muted">{props.footerText}</small>
+            </Card.Footer>
         </Card>
     )
 }
