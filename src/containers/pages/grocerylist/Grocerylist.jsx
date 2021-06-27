@@ -2,25 +2,41 @@ import React from 'react';
 import { Component } from 'react';
 
 import { Row, Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import Hoc from '../../../components/hoc/Hoc';
 
-class GroceryList extends Component{
+/*class GroceryList extends Component{
     constructor(){
         super();
-        this.state={}
+        this.state={
+            id: null
+        }
     }
 
-    async componentDidMount(){
-
+    componentDidMount(){
+        let id  = this.props.match.params.id;
+        console.log(this.props);
+        this.setState({ id })
     }
 
     render(){
         return(
             <Hoc>
-                {/** Show the individual list */}
+                <p>{this.state.id}</p>
             </Hoc>
         )
     }
+}*/
+
+const GroceryList = (props) => {
+    let { id } = useParams();
+    console.log(id);
+
+    return(
+        <Hoc>
+            <p>{id}</p>
+        </Hoc>
+    )
 }
 
 export default GroceryList;
