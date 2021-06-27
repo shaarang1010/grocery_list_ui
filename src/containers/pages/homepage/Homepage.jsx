@@ -10,14 +10,23 @@ import {
   Accordion,
   Badge,
   Card,
+  DropdownButton,
+  Dropdown,
 } from "react-bootstrap";
+
+import { BsFillPlusSquareFill, BsFillFunnelFill } from "react-icons/bs";
+
+import { Link } from 'react-router-dom';
 
 import Hoc from "../../../components/hoc/Hoc";
 import NavComponent from "../../../components/navbar/Navbar";
 
 import CardComponent from "../../../components/card/CardComponent";
 
+import ListComponent from "../../../components/listgroup/ListGroup";
+
 import "./Homepage.css";
+
 class Homepage extends Component {
   constructor() {
     super();
@@ -41,11 +50,14 @@ class Homepage extends Component {
 
   componentDidUpdate() {}
 
+  createRandomName() {
+    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast"];
+    let randomNumber = Math.floor(Math.random() * 6);
+    return `${names[randomNumber]}_${randomNumber}`;
+  }
+
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
-
-    let element = groceryList.slice(0, 2);
-
     return (
       <Hoc>
         {/*
@@ -57,17 +69,42 @@ class Homepage extends Component {
         <NavComponent bgColor="dark" header="Shopping list" user="Shaarang" />
         <Container>
           <Row>
-            <Col xs={12} md={3}>
-              <Button variant="success" size="lg" block>
-                Create a new list
+            <Col xs={6} md={3}>
+              <Button variant="outline-dark" size="lg" block>
+                <BsFillPlusSquareFill /> Create a new list
               </Button>
+            </Col>
+            <Col xs={2} md={2}>
+              {" "}
+            </Col>
+            <Col xs={4} md={{ span: 2, offset: 5 }}>
+              <DropdownButton
+                id="dropdown-basic-button"
+                variant="outline-dark"
+                title={<BsFillFunnelFill />}
+              >
+                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+              </DropdownButton>
             </Col>
           </Row>
           <Row>
-            {groceryList.map((item) => {
+            {groceryList.map((item, index) => {
+              let randomName = this.createRandomName();
+              let completedItems = item.items.filter(
+                (el) => el.completed === true
+              );
+              let incompleteItems = item.items.filter(
+                (el) => el.completed === false
+              );
               return (
-                <Col xs={12} md={4}>
-                  <CardComponent header={item.date}>
+                <Col xs={12} md={4} key={index}>
+                  <Link to={`/list/${Number(item.id)}`}>
+                  <CardComponent
+                    header={randomName}
+                    footerText={"Created on " + item.date}
+                  >
                     <Accordion defaultActiveKey="1">
                       <Card>
                         <Card.Header>
@@ -79,16 +116,16 @@ class Homepage extends Component {
                           >
                             Bought{" "}
                             <Badge variant="light">
-                              {
-                                item.items.filter((el) => el.completed === true)
-                                  .length
-                              }
+                              {completedItems.length}
                             </Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="0">
                           <Card.Body>
-                            Bought{" "}
+                            <ListComponent
+                              variant="flush"
+                              items={completedItems}
+                            ></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
@@ -102,21 +139,22 @@ class Homepage extends Component {
                           >
                             To be Completed{" "}
                             <Badge variant="light">
-                              {
-                                item.items.filter((el) => el.completed === false)
-                                  .length
-                              }
+                              {incompleteItems.length}
                             </Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="1">
                           <Card.Body>
-                            To be Completed{" "}
+                            <ListComponent
+                              variant="flush"
+                              items={incompleteItems}
+                            ></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                     </Accordion>
                   </CardComponent>
+                  </Link>
                 </Col>
               );
             })}
