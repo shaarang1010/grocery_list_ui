@@ -1,24 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import Card from 'react-bootstrap/Card';
+import Card from "react-bootstrap/Card";
 
-import './CardComponent.css';
+import { Link } from "react-router-dom";
 
+import "./CardComponent.css";
 
 const CardComponent = (props) => {
-    return(
-        <Card bg={props.background} className='card'>
-            <Card.Header>
-                {props.header}
-            </Card.Header>
-            <Card.Body>
-                {props.children}
-            </Card.Body>
-            <Card.Footer>
-            <small className="text-muted">{props.footerText}</small>
-            </Card.Footer>
-        </Card>
-    )
-}
+  return (
+    <Card bg={props.background} className="card">
+      <Card.Header>
+        <Link to={props.link}>{props.header}</Link>
+      </Card.Header>
+      <Card.Body>{props.children}</Card.Body>
+      <Card.Footer>
+        <small className="text-muted">{props.footerText}</small>
+      </Card.Footer>
+    </Card>
+  );
+};
 
 export default CardComponent;

@@ -16,10 +16,7 @@ import {
 
 import { BsFillPlusSquareFill, BsFillFunnelFill } from "react-icons/bs";
 
-import { Link } from 'react-router-dom';
-
 import Hoc from "../../../components/hoc/Hoc";
-import NavComponent from "../../../components/navbar/Navbar";
 
 import CardComponent from "../../../components/card/CardComponent";
 
@@ -51,22 +48,15 @@ class Homepage extends Component {
   componentDidUpdate() {}
 
   createRandomName() {
-    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast"];
-    let randomNumber = Math.floor(Math.random() * 6);
+    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast", "DA", "WAVC"];
+    let randomNumber = Math.floor(Math.random() * 8);
     return `${names[randomNumber]}_${randomNumber}`;
   }
 
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
     return (
-      <Hoc>
-        {/*
-                    Render list of grocery items as a card. 
-                    Card and items completed and to complete
-                    May be organize by date
-                    
-                */}
-        <NavComponent bgColor="dark" header="Shopping list" user="Shaarang" />
+      <Hoc>       
         <Container>
           <Row>
             <Col xs={6} md={3}>
@@ -100,9 +90,9 @@ class Homepage extends Component {
               );
               return (
                 <Col xs={12} md={4} key={index}>
-                  <Link to={`/list/${Number(item.id)}`}>
                   <CardComponent
                     header={randomName}
+                    link={`/list/${item.id}`}
                     footerText={"Created on " + item.date}
                   >
                     <Accordion defaultActiveKey="1">
@@ -154,7 +144,6 @@ class Homepage extends Component {
                       </Card>
                     </Accordion>
                   </CardComponent>
-                  </Link>
                 </Col>
               );
             })}

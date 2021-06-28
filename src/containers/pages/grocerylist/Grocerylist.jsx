@@ -34,7 +34,7 @@ const GroceryList = (props) => {
 
     return(
         <Hoc>
-            <p>{id}</p>
+            <p>This is {id} </p>
         </Hoc>
     )
 }
