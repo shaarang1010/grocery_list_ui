@@ -9,18 +9,16 @@ import {
   Button,
   Accordion,
   Badge,
-  Card,
-  DropdownButton,
-  Dropdown,
+  Card
 } from "react-bootstrap";
-
-import { BsFillPlusSquareFill, BsFillFunnelFill } from "react-icons/bs";
 
 import Hoc from "../../../components/hoc/Hoc";
 
 import CardComponent from "../../../components/card/CardComponent";
 
 import ListComponent from "../../../components/listgroup/ListGroup";
+
+import Controls from "../../../components/actioncontrols/ActionControl";
 
 import "./Homepage.css";
 
@@ -59,25 +57,7 @@ class Homepage extends Component {
       <Hoc>       
         <Container>
           <Row>
-            <Col xs={6} md={3}>
-              <Button variant="outline-dark" size="lg" block>
-                <BsFillPlusSquareFill /> Create a new list
-              </Button>
-            </Col>
-            <Col xs={2} md={2}>
-              {" "}
-            </Col>
-            <Col xs={4} md={{ span: 2, offset: 5 }}>
-              <DropdownButton
-                id="dropdown-basic-button"
-                variant="outline-dark"
-                title={<BsFillFunnelFill />}
-              >
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-              </DropdownButton>
-            </Col>
+            <Controls />
           </Row>
           <Row>
             {groceryList.map((item, index) => {
@@ -93,7 +73,7 @@ class Homepage extends Component {
                   <CardComponent
                     header={randomName}
                     link={`/list/${item.id}`}
-                    footerText={"Created on " + item.date}
+                    footerText={"Created on " + new Date(item.date).toUTCString()}
                   >
                     <Accordion defaultActiveKey="1">
                       <Card>
