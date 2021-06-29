@@ -11,6 +11,10 @@
     color: whitesmoke;
 }
 
+#basic-nav-dropdown{
+    color: whitesmoke !important;
+}
+
 .navbar-light .navbar-nav .nav-link:hover{
     color: whitesmoke;
 }
@@ -19,7 +23,14 @@
     color: whitesmoke;
 }
 
+.dropdown-item:active{
+    background-color: #343a40;
+}
 
+.navbar-brand a{
+    color: whitesmoke;
+    text-decoration: none;
+}
 .navbar-toggler{
     background-color: whitesmoke;
 }

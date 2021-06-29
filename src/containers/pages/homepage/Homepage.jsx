@@ -9,21 +9,16 @@ import {
   Button,
   Accordion,
   Badge,
-  Card,
-  DropdownButton,
-  Dropdown,
+  Card
 } from "react-bootstrap";
 
-import { BsFillPlusSquareFill, BsFillFunnelFill } from "react-icons/bs";
-
-import { Link } from 'react-router-dom';
-
 import Hoc from "../../../components/hoc/Hoc";
-import NavComponent from "../../../components/navbar/Navbar";
 
 import CardComponent from "../../../components/card/CardComponent";
 
 import ListComponent from "../../../components/listgroup/ListGroup";
+
+import Controls from "../../../components/actioncontrols/ActionControl";
 
 import "./Homepage.css";
 
@@ -51,43 +46,18 @@ class Homepage extends Component {
   componentDidUpdate() {}
 
   createRandomName() {
-    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast"];
-    let randomNumber = Math.floor(Math.random() * 6);
+    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast", "DA", "WAVC"];
+    let randomNumber = Math.floor(Math.random() * 8);
     return `${names[randomNumber]}_${randomNumber}`;
   }
 
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
     return (
-      <Hoc>
-        {/*
-                    Render list of grocery items as a card. 
-                    Card and items completed and to complete
-                    May be organize by date
-                    
-                */}
-        <NavComponent bgColor="dark" header="Shopping list" user="Shaarang" />
+      <Hoc>       
         <Container>
           <Row>
-            <Col xs={6} md={3}>
-              <Button variant="outline-dark" size="lg" block>
-                <BsFillPlusSquareFill /> Create a new list
-              </Button>
-            </Col>
-            <Col xs={2} md={2}>
-              {" "}
-            </Col>
-            <Col xs={4} md={{ span: 2, offset: 5 }}>
-              <DropdownButton
-                id="dropdown-basic-button"
-                variant="outline-dark"
-                title={<BsFillFunnelFill />}
-              >
-                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-              </DropdownButton>
-            </Col>
+            <Controls />
           </Row>
           <Row>
             {groceryList.map((item, index) => {
@@ -100,10 +70,10 @@ class Homepage extends Component {
               );
               return (
                 <Col xs={12} md={4} key={index}>
-                  <Link to={`/list/${Number(item.id)}`}>
                   <CardComponent
                     header={randomName}
-                    footerText={"Created on " + item.date}
+                    link={`/list/${item.id}`}
+                    footerText={"Created on " + new Date(item.date).toUTCString()}
                   >
                     <Accordion defaultActiveKey="1">
                       <Card>
@@ -154,7 +124,6 @@ class Homepage extends Component {
                       </Card>
                     </Accordion>
                   </CardComponent>
-                  </Link>
                 </Col>
               );
             })}

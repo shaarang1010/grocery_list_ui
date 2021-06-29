@@ -2,12 +2,16 @@ import React from "react";
 
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 
+import { Link } from "react-router-dom";
+
 import './Navbar.css';
 
 const NavComponent = (props) => {
   return (
     <Navbar bg={props.bgColor} expand="lg">
-      <Navbar.Brand href="#home">{props.header}</Navbar.Brand>
+      <Navbar.Brand>
+        <Link to={props.homeLink}>{props.header}</Link>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
         <Nav>
