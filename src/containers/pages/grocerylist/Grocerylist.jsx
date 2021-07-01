@@ -4,8 +4,8 @@ import axios from "axios";
 
 import { Row, Col, Jumbotron, Form, Container } from "react-bootstrap";
 import Hoc from "../../../components/hoc/Hoc";
-//import { useParams } from 'react-router-dom';
-//import Hoc from '../../../components/hoc/Hoc';
+
+import './GroceryList.css';
 
 class GroceryList extends Component {
   constructor() {
@@ -48,11 +48,11 @@ class GroceryList extends Component {
                 />
               </Col>
             </Row>
-            <Form.Group as={Col}>
+            <Form.Group>
               {this.state.item? this.state.item.items.map((el, index) =>{
                   return(
-                      <Col xs={6} md={3} key={index}>
-                        <Form.Check type="checkbox" defaultChecked={el.completed} label={el.item} value={el.item} /> 
+                      <Col xs={6} md={2} key={index}>
+                        <Form.Check type="checkbox" defaultChecked={el.completed} label={<h5>{el.item}</h5>} value={el.item} /> 
                       </Col>
                   )
               }): null}
