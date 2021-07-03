@@ -2,10 +2,20 @@ import React from "react";
 import { Component } from "react";
 import axios from "axios";
 
-import { Row, Col, Jumbotron, Form, Container } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Jumbotron,
+  Form,
+  Container,
+  ListGroup,
+  Button,
+} from "react-bootstrap";
 import Hoc from "../../../components/hoc/Hoc";
 
-import './GroceryList.css';
+import { BsTrashFill } from "react-icons/bs";
+
+import "./GroceryList.css";
 
 class GroceryList extends Component {
   constructor() {
@@ -30,12 +40,23 @@ class GroceryList extends Component {
       });
   }
 
+  onCheckHandler = (params) => (e) => {
+    const element = document.getElementById(params);
+    if (element.style.textDecoration === "none") {
+      element.style.textDecoration = "line-through";
+    } else {
+      element.style.textDecoration = "none";
+    }
+  };
+
   render() {
     return (
       <Hoc>
         <Jumbotron fluid>
-          <h1> Grocery List </h1>
-          <p> Edit or Update your Grocery List </p>
+          <Col md={{ offset: 3, span: 6 }}>
+            <h1> Grocery List </h1>
+            <p> Edit or Update your Grocery List </p>
+          </Col>
         </Jumbotron>
         <Container>
           <Form>
@@ -48,21 +69,52 @@ class GroceryList extends Component {
                 />
               </Col>
             </Row>
-            <Form.Group>
-              {this.state.item? this.state.item.items.map((el, index) =>{
-                  return(
-                      <Col xs={6} md={2} key={index}>
-                        <Form.Check type="checkbox" defaultChecked={el.completed} label={<h5>{el.item}</h5>} value={el.item} /> 
+            <ListGroup variant="flush">
+              {this.state.item
+                ? this.state.item.items.map((el, index) => {
+                    return (
+                      <Col xs={12} md={8} key={index}>
+                        <ListGroup.Item>
+                          <Col xs={8} md={6}>
+                            <Form.Check
+                              type="checkbox"
+                              defaultChecked={el.completed}
+                              onChange={this.onCheckHandler(
+                                `${el.item}_${index}`
+                              )}
+                              id={el.item}
+                              label={
+                                <p
+                                  id={`${el.item}_${index}`}
+                                  style={{
+                                    textDecoration: el.completed
+                                      ? "line-through"
+                                      : "none",
+                                  }}
+                                >
+                                  {el.item}
+                                </p>
+                              }
+                              value={el.item}
+                            />
+                            <Button variant="outline-danger">
+                              {<BsTrashFill />}
+                            </Button>
+                          </Col>
+                          <Col xs={2} md={2}>
+                            
+                          </Col>
+                        </ListGroup.Item>
                       </Col>
-                  )
-              }): null}
-              </Form.Group>
+                    );
+                  })
+                : null}
+            </ListGroup>
           </Form>
         </Container>
       </Hoc>
     );
   }
 }
-
 
 export default GroceryList;
