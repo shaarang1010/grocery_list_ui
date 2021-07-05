@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import Hoc from "../../../components/hoc/Hoc";
 
-import { BsTrashFill } from "react-icons/bs";
+import { BsTrashFill, BsFillPlusSquareFill } from "react-icons/bs";
 
 import "./GroceryList.css";
 
@@ -49,6 +49,19 @@ class GroceryList extends Component {
     }
   };
 
+  onDeleteElementHandler = (index) => (e) =>{
+    e.preventDefault();
+    let { item } = this.state;
+    let { items } = item;
+    let newItems = items.filter((el,i) => i !== index);
+    item['items'] = newItems;
+    this.setState({ item });
+  }
+
+  addItemHandler = (e) =>{
+
+  }
+
   render() {
     return (
       <Hoc>
@@ -59,7 +72,6 @@ class GroceryList extends Component {
           </Col>
         </Jumbotron>
         <Container>
-          <Form>
             <Row>
               <Col xs={12} md={12}>
                 <Form.Control
@@ -69,13 +81,14 @@ class GroceryList extends Component {
                 />
               </Col>
             </Row>
+            <Row>
+            <Col xs={12} md={8}>
             <ListGroup variant="flush">
               {this.state.item
                 ? this.state.item.items.map((el, index) => {
                     return (
-                      <Col xs={12} md={8} key={index}>
-                        <ListGroup.Item>
-                          <Col xs={8} md={6}>
+                        <ListGroup.Item key={index}>
+                          <Col xs={10} md={6}>
                             <Form.Check
                               type="checkbox"
                               defaultChecked={el.completed}
@@ -84,6 +97,7 @@ class GroceryList extends Component {
                               )}
                               id={el.item}
                               label={
+                                
                                 <p
                                   id={`${el.item}_${index}`}
                                   style={{
@@ -93,24 +107,41 @@ class GroceryList extends Component {
                                   }}
                                 >
                                   {el.item}
+                                 {" "}
+                                 
+                                    
                                 </p>
+                                
+                                
                               }
                               value={el.item}
+                              feedback="Click to select"
                             />
-                            <Button variant="outline-danger">
-                              {<BsTrashFill />}
-                            </Button>
                           </Col>
-                          <Col xs={2} md={2}>
-                            
+                          <Col sm={2}>
+                              
                           </Col>
+                           
                         </ListGroup.Item>
-                      </Col>
+                      
                     );
                   })
                 : null}
+                <ListGroup.Item>
+                  <Col md={5} xs={8}>
+                  <Form.Control type="text" placeholder="Add new item" />
+                  </Col>
+                </ListGroup.Item>
+                <Row>
+              <Col xs={4} md={4}>
+              <Button variant="outline-dark">
+                   <BsFillPlusSquareFill/> Add
+                </Button>
+              </Col>
+            </Row>
             </ListGroup>
-          </Form>
+            </Col>
+            </Row>
         </Container>
       </Hoc>
     );
