@@ -51,13 +51,36 @@ class Homepage extends Component {
     return `${names[randomNumber]}_${randomNumber}`;
   }
 
+  _sortByDateHandler = () =>{
+    this.state.shoppingList.sort((a,b) => {
+      return new Date(a.date) - new Date(b.date);
+    })
+  }
+
+  _sortByCompletedHandler = () =>{
+    this.state.shoppingList.sort((a,b) => {
+
+    })
+  }
+
+  _sortByNameHandler = () =>{
+    this.state.shoppingList.sort((a,b)=>{
+        if(a.groceryListName < b.groceryListName) { return -1; }
+        if(a.groceryListName > b.groceryListName) { return 1; }
+        return 0;
+    })
+  }
+
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
     return (
       <Hoc>       
         <Container>
           <Row>
-            <Controls />
+            <Controls 
+            sortDate={this._sortByDateHandler}
+            sortName={this._sortByNameHandler}
+            sortCompleted={this._sortByCompletedHandler}/>
           </Row>
           <Row>
             {groceryList.map((item, index) => {

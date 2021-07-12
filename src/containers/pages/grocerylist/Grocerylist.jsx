@@ -23,6 +23,7 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
+      newGroceryItem: "",
     };
   }
 
@@ -49,18 +50,28 @@ class GroceryList extends Component {
     }
   };
 
-  onDeleteElementHandler = (index) => (e) =>{
+  onDeleteElementHandler = (index) => (e) => {
     e.preventDefault();
     let { item } = this.state;
     let { items } = item;
-    let newItems = items.filter((el,i) => i !== index);
-    item['items'] = newItems;
+    let newItems = items.filter((el, i) => i !== index);
+    item["items"] = newItems;
     this.setState({ item });
-  }
+  };
 
-  addItemHandler = (e) =>{
+  onChangeHandler = (e) => {
+    this.setState({ newGroceryItem: e.target.value });
+  };
 
-  }
+  addItemHandler = (e) => {
+    let { item } = this.state;
+    let itemsList = [
+      ...item.items,
+      { item: this.state.newGroceryItem, completed: false },
+    ];
+    let updatedGroceryList = { ...item, items: itemsList };
+    this.setState({ item: updatedGroceryList, newGroceryItem: "" });
+  };
 
   render() {
     return (
@@ -72,21 +83,21 @@ class GroceryList extends Component {
           </Col>
         </Jumbotron>
         <Container>
-            <Row>
-              <Col xs={12} md={12}>
-                <Form.Control
-                  size="lg"
-                  type="value"
-                  ref={(listName) => (this.itemName = listName)}
-                />
-              </Col>
-            </Row>
-            <Row>
+          <Row>
+            <Col xs={12} md={12}>
+              <Form.Control
+                size="lg"
+                type="value"
+                ref={(listName) => (this.itemName = listName)}
+              />
+            </Col>
+          </Row>
+          <Row>
             <Col xs={12} md={8}>
-            <ListGroup variant="flush">
-              {this.state.item
-                ? this.state.item.items.map((el, index) => {
-                    return (
+              <ListGroup variant="flush">
+                {this.state.item
+                  ? this.state.item.items.map((el, index) => {
+                      return (
                         <ListGroup.Item key={index}>
                           <Col xs={10} md={6}>
                             <Form.Check
@@ -97,8 +108,7 @@ class GroceryList extends Component {
                               )}
                               id={el.item}
                               label={
-                                
-                                <p
+                                <h6
                                   id={`${el.item}_${index}`}
                                   style={{
                                     textDecoration: el.completed
@@ -106,42 +116,43 @@ class GroceryList extends Component {
                                       : "none",
                                   }}
                                 >
-                                  {el.item}
-                                 {" "}
-                                 
-                                    
-                                </p>
-                                
-                                
+                                  {el.item}{" "}
+                                </h6>
                               }
                               value={el.item}
                               feedback="Click to select"
                             />
                           </Col>
-                          <Col sm={2}>
-                              
-                          </Col>
-                           
+                          <Col sm={2}></Col>
                         </ListGroup.Item>
-                      
-                    );
-                  })
-                : null}
+                      );
+                    })
+                  : null}
                 <ListGroup.Item>
-                  <Col md={5} xs={8}>
-                  <Form.Control type="text" placeholder="Add new item" />
+                  <Col md={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Add new item"
+                      value={this.state.newGroceryItem}
+                      onChange={this.onChangeHandler}
+                      style={{ border: "0", boxShadow: "none" }}
+                    />
                   </Col>
                 </ListGroup.Item>
                 <Row>
-              <Col xs={4} md={4}>
-              <Button variant="outline-dark">
-                   <BsFillPlusSquareFill/> Add
-                </Button>
-              </Col>
-            </Row>
-            </ListGroup>
+                  <Col md={6} xs={6}>
+                    <Button style={{marginTop: '10px', marginLeft: '10px'}}
+                      variant="outline-dark"
+                      onClick={this.addItemHandler}
+                      disabled={this.state.newGroceryItem.length === 0}
+                    >
+                      <BsFillPlusSquareFill style={{marginRight: '5px'}}/> Add
+                    </Button>
+                  </Col>
+                </Row>
+              </ListGroup>
             </Col>
-            </Row>
+          </Row>
         </Container>
       </Hoc>
     );
