@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import Hoc from "../../../components/hoc/Hoc";
 
-import { BsTrashFill } from "react-icons/bs";
+import { BsTrashFill, BsFillPlusSquareFill } from "react-icons/bs";
 
 import "./GroceryList.css";
 
@@ -23,6 +23,7 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
+      newGroceryItem: "",
     };
   }
 
@@ -49,6 +50,29 @@ class GroceryList extends Component {
     }
   };
 
+  onDeleteElementHandler = (index) => (e) => {
+    e.preventDefault();
+    let { item } = this.state;
+    let { items } = item;
+    let newItems = items.filter((el, i) => i !== index);
+    item["items"] = newItems;
+    this.setState({ item });
+  };
+
+  onChangeHandler = (e) => {
+    this.setState({ newGroceryItem: e.target.value });
+  };
+
+  addItemHandler = (e) => {
+    let { item } = this.state;
+    let itemsList = [
+      ...item.items,
+      { item: this.state.newGroceryItem, completed: false },
+    ];
+    let updatedGroceryList = { ...item, items: itemsList };
+    this.setState({ item: updatedGroceryList, newGroceryItem: "" });
+  };
+
   render() {
     return (
       <Hoc>
@@ -59,23 +83,23 @@ class GroceryList extends Component {
           </Col>
         </Jumbotron>
         <Container>
-          <Form>
-            <Row>
-              <Col xs={12} md={12}>
-                <Form.Control
-                  size="lg"
-                  type="value"
-                  ref={(listName) => (this.itemName = listName)}
-                />
-              </Col>
-            </Row>
-            <ListGroup variant="flush">
-              {this.state.item
-                ? this.state.item.items.map((el, index) => {
-                    return (
-                      <Col xs={12} md={8} key={index}>
-                        <ListGroup.Item>
-                          <Col xs={8} md={6}>
+          <Row>
+            <Col xs={12} md={12}>
+              <Form.Control
+                size="lg"
+                type="value"
+                ref={(listName) => (this.itemName = listName)}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={8}>
+              <ListGroup variant="flush">
+                {this.state.item
+                  ? this.state.item.items.map((el, index) => {
+                      return (
+                        <ListGroup.Item key={index}>
+                          <Col xs={10} md={6}>
                             <Form.Check
                               type="checkbox"
                               defaultChecked={el.completed}
@@ -84,7 +108,7 @@ class GroceryList extends Component {
                               )}
                               id={el.item}
                               label={
-                                <p
+                                <h6
                                   id={`${el.item}_${index}`}
                                   style={{
                                     textDecoration: el.completed
@@ -92,25 +116,43 @@ class GroceryList extends Component {
                                       : "none",
                                   }}
                                 >
-                                  {el.item}
-                                </p>
+                                  {el.item}{" "}
+                                </h6>
                               }
                               value={el.item}
+                              feedback="Click to select"
                             />
-                            <Button variant="outline-danger">
-                              {<BsTrashFill />}
-                            </Button>
                           </Col>
-                          <Col xs={2} md={2}>
-                            
-                          </Col>
+                          <Col sm={2}></Col>
                         </ListGroup.Item>
-                      </Col>
-                    );
-                  })
-                : null}
-            </ListGroup>
-          </Form>
+                      );
+                    })
+                  : null}
+                <ListGroup.Item>
+                  <Col md={12} xs={12}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Add new item"
+                      value={this.state.newGroceryItem}
+                      onChange={this.onChangeHandler}
+                      style={{ border: "0", boxShadow: "none" }}
+                    />
+                  </Col>
+                </ListGroup.Item>
+                <Row>
+                  <Col md={6} xs={6}>
+                    <Button style={{marginTop: '10px', marginLeft: '10px'}}
+                      variant="outline-dark"
+                      onClick={this.addItemHandler}
+                      disabled={this.state.newGroceryItem.length === 0}
+                    >
+                      <BsFillPlusSquareFill style={{marginRight: '5px'}}/> Add
+                    </Button>
+                  </Col>
+                </Row>
+              </ListGroup>
+            </Col>
+          </Row>
         </Container>
       </Hoc>
     );
