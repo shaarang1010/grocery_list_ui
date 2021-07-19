@@ -12,6 +12,12 @@ const groceryItemReducer = (state = initState, action) => {
         ...state,
         groceryList: newGroceryList
       };
+    case 'REMOVE_GROCERY_ITEM':
+      let items = state.groceryList.filter((item) => item.item !== action.payload.item);
+      return {
+        ...state,
+        groceryList: items
+      };
     default:
       break;
   }
