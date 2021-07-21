@@ -1,21 +1,17 @@
-import React from "react";
-import { Component } from "react";
-import axios from "axios";
+import React from 'react';
+import { Component } from 'react';
+import axios from 'axios';
 
-import {
-  Row,
-  Col,
-  Jumbotron,
-  Form,
-  Container,
-  ListGroup,
-  Button,
-} from "react-bootstrap";
-import Hoc from "../../../components/hoc/Hoc";
+import { Row, Col, Jumbotron, Form, Container, ListGroup, Button } from 'react-bootstrap';
+import Hoc from '../../../components/hoc/Hoc';
 
-import { BsTrashFill, BsFillPlusSquareFill } from "react-icons/bs";
+import { BsTrashFill, BsFillPlusSquareFill } from 'react-icons/bs';
 
-import "./GroceryList.css";
+import { connect } from 'react-redux';
+
+import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
+
+import './GroceryList.css';
 
 class GroceryList extends Component {
   constructor() {
@@ -23,7 +19,7 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
-      newGroceryItem: "",
+      newGroceryItem: ''
     };
   }
 
@@ -31,7 +27,7 @@ class GroceryList extends Component {
     let id = this.props.match.params.id;
     // load json file
     axios
-      .get("../data/groceries_list.json")
+      .get('../data/groceries_list.json')
       .then((response) => {
         const { data } = response;
         this.setState({ item: data.filter((el) => el.id === id)[0] });
@@ -43,10 +39,10 @@ class GroceryList extends Component {
 
   onCheckHandler = (params) => (e) => {
     const element = document.getElementById(params);
-    if (element.style.textDecoration === "none") {
-      element.style.textDecoration = "line-through";
+    if (element.style.textDecoration === 'none') {
+      element.style.textDecoration = 'line-through';
     } else {
-      element.style.textDecoration = "none";
+      element.style.textDecoration = 'none';
     }
   };
 
@@ -55,7 +51,7 @@ class GroceryList extends Component {
     let { item } = this.state;
     let { items } = item;
     let newItems = items.filter((el, i) => i !== index);
-    item["items"] = newItems;
+    item['items'] = newItems;
     this.setState({ item });
   };
 
@@ -65,12 +61,9 @@ class GroceryList extends Component {
 
   addItemHandler = (e) => {
     let { item } = this.state;
-    let itemsList = [
-      ...item.items,
-      { item: this.state.newGroceryItem, completed: false },
-    ];
+    let itemsList = [...item.items, { item: this.state.newGroceryItem, completed: false }];
     let updatedGroceryList = { ...item, items: itemsList };
-    this.setState({ item: updatedGroceryList, newGroceryItem: "" });
+    this.setState({ item: updatedGroceryList, newGroceryItem: '' });
   };
 
   render() {
@@ -85,11 +78,7 @@ class GroceryList extends Component {
         <Container>
           <Row>
             <Col xs={12} md={12}>
-              <Form.Control
-                size="lg"
-                type="value"
-                ref={(listName) => (this.itemName = listName)}
-              />
+              <Form.Control size="lg" type="value" ref={(listName) => (this.itemName = listName)} />
             </Col>
           </Row>
           <Row>
@@ -103,20 +92,16 @@ class GroceryList extends Component {
                             <Form.Check
                               type="checkbox"
                               defaultChecked={el.completed}
-                              onChange={this.onCheckHandler(
-                                `${el.item}_${index}`
-                              )}
+                              onChange={this.onCheckHandler(`${el.item}_${index}`)}
                               id={el.item}
                               label={
                                 <h6
                                   id={`${el.item}_${index}`}
                                   style={{
-                                    textDecoration: el.completed
-                                      ? "line-through"
-                                      : "none",
+                                    textDecoration: el.completed ? 'line-through' : 'none'
                                   }}
                                 >
-                                  {el.item}{" "}
+                                  {el.item}{' '}
                                 </h6>
                               }
                               value={el.item}
@@ -135,18 +120,19 @@ class GroceryList extends Component {
                       placeholder="Add new item"
                       value={this.state.newGroceryItem}
                       onChange={this.onChangeHandler}
-                      style={{ border: "0", boxShadow: "none" }}
+                      style={{ border: '0', boxShadow: 'none' }}
                     />
                   </Col>
                 </ListGroup.Item>
                 <Row>
                   <Col md={6} xs={6}>
-                    <Button style={{marginTop: '10px', marginLeft: '10px'}}
+                    <Button
+                      style={{ marginTop: '10px', marginLeft: '10px' }}
                       variant="outline-dark"
                       onClick={this.addItemHandler}
                       disabled={this.state.newGroceryItem.length === 0}
                     >
-                      <BsFillPlusSquareFill style={{marginRight: '5px'}}/> Add
+                      <BsFillPlusSquareFill style={{ marginRight: '5px' }} /> Add
                     </Button>
                   </Col>
                 </Row>
@@ -159,4 +145,17 @@ class GroceryList extends Component {
   }
 }
 
-export default GroceryList;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    cartItems: state.cart.cart
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (data) => dispatch(addCartItemsAction(data)),
+    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data))
+  };
+};
+
+export default connect(mapDispatchToProps, mapStateToProps)(GroceryList);

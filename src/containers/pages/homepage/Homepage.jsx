@@ -1,42 +1,39 @@
-import React from "react";
-import { Component } from "react";
-import axios from "axios";
+import React from 'react';
+import { Component } from 'react';
+import axios from 'axios';
 
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Accordion,
-  Badge,
-  Card
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Accordion, Badge, Card } from 'react-bootstrap';
 
-import Hoc from "../../../components/hoc/Hoc";
+import Hoc from '../../../components/hoc/Hoc';
 
-import CardComponent from "../../../components/card/CardComponent";
+import CardComponent from '../../../components/card/CardComponent';
 
-import ListComponent from "../../../components/listgroup/ListGroup";
+import ListComponent from '../../../components/listgroup/ListGroup';
 
-import Controls from "../../../components/actioncontrols/ActionControl";
+import Controls from '../../../components/actioncontrols/ActionControl';
 
-import "./Homepage.css";
+import { connect } from 'react-redux';
+
+import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
+
+import './Homepage.css';
 
 class Homepage extends Component {
   constructor() {
     super();
     this.state = {
-      shoppingList: [],
+      shoppingList: []
     };
   }
 
   componentDidMount() {
     // load json file
     axios
-      .get("../data/groceries_list.json")
+      .get('../data/groceries_list.json')
       .then((response) => {
         const { data } = response;
         this.setState({ shoppingList: data });
+        this.props.addToCart(data);
       })
       .catch((err) => {
         console.log(err);
@@ -46,102 +43,79 @@ class Homepage extends Component {
   componentDidUpdate() {}
 
   createRandomName() {
-    const names = ["Plant", "Cat", "Phones", "Xbox", "Playstation", "AvoToast", "DA", "WAVC"];
+    const names = ['Plant', 'Cat', 'Phones', 'Xbox', 'Playstation', 'AvoToast', 'DA', 'WAVC'];
     let randomNumber = Math.floor(Math.random() * 8);
     return `${names[randomNumber]}_${randomNumber}`;
   }
 
-  _sortByDateHandler = () =>{
-    this.state.shoppingList.sort((a,b) => {
+  _sortByDateHandler = () => {
+    this.state.shoppingList.sort((a, b) => {
       return new Date(a.date) - new Date(b.date);
-    })
-  }
+    });
+  };
 
-  _sortByCompletedHandler = () =>{
-    this.state.shoppingList.sort((a,b) => {
+  _sortByCompletedHandler = () => {
+    this.state.shoppingList.sort((a, b) => {});
+  };
 
-    })
-  }
-
-  _sortByNameHandler = () =>{
-    this.state.shoppingList.sort((a,b)=>{
-        if(a.groceryListName < b.groceryListName) { return -1; }
-        if(a.groceryListName > b.groceryListName) { return 1; }
-        return 0;
-    })
-  }
+  _sortByNameHandler = () => {
+    this.state.shoppingList.sort((a, b) => {
+      if (a.groceryListName < b.groceryListName) {
+        return -1;
+      }
+      if (a.groceryListName > b.groceryListName) {
+        return 1;
+      }
+      return 0;
+    });
+  };
 
   render() {
     const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
     return (
-      <Hoc>       
+      <Hoc>
         <Container>
           <Row>
-            <Controls 
-            sortDate={this._sortByDateHandler}
-            sortName={this._sortByNameHandler}
-            sortCompleted={this._sortByCompletedHandler}/>
+            <Controls
+              sortDate={this._sortByDateHandler}
+              sortName={this._sortByNameHandler}
+              sortCompleted={this._sortByCompletedHandler}
+            />
           </Row>
           <Row>
             {groceryList.map((item, index) => {
               let randomName = this.createRandomName();
-              let completedItems = item.items.filter(
-                (el) => el.completed === true
-              );
-              let incompleteItems = item.items.filter(
-                (el) => el.completed === false
-              );
+              let completedItems = item.items.filter((el) => el.completed === true);
+              let incompleteItems = item.items.filter((el) => el.completed === false);
               return (
                 <Col xs={12} md={4} key={index}>
                   <CardComponent
                     header={randomName}
                     link={`/list/${item.id}`}
-                    footerText={"Created on " + new Date(item.date).toUTCString()}
+                    footerText={'Created on ' + new Date(item.date).toUTCString()}
                   >
                     <Accordion defaultActiveKey="1">
                       <Card>
                         <Card.Header>
-                          <Accordion.Toggle
-                            as={Button}
-                            variant="success"
-                            eventKey="0"
-                            block
-                          >
-                            Bought{" "}
-                            <Badge variant="light">
-                              {completedItems.length}
-                            </Badge>
+                          <Accordion.Toggle as={Button} variant="success" eventKey="0" block>
+                            Bought <Badge variant="light">{completedItems.length}</Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="0">
                           <Card.Body>
-                            <ListComponent
-                              variant="flush"
-                              items={completedItems}
-                            ></ListComponent>
+                            <ListComponent variant="flush" items={completedItems}></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
                       <Card>
                         <Card.Header>
-                          <Accordion.Toggle
-                            as={Button}
-                            variant="danger"
-                            eventKey="1"
-                            block
-                          >
-                            To be Completed{" "}
-                            <Badge variant="light">
-                              {incompleteItems.length}
-                            </Badge>
+                          <Accordion.Toggle as={Button} variant="danger" eventKey="1" block>
+                            To be Completed <Badge variant="light">{incompleteItems.length}</Badge>
                           </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="1">
                           <Card.Body>
-                            <ListComponent
-                              variant="flush"
-                              items={incompleteItems}
-                            ></ListComponent>
+                            <ListComponent variant="flush" items={incompleteItems}></ListComponent>
                           </Card.Body>
                         </Accordion.Collapse>
                       </Card>
@@ -157,4 +131,17 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage;
+const mapStateToProps = (state) => {
+  return {
+    cartItems: state.cart.cart
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addToCart: (data) => dispatch(addCartItemsAction(data)),
+    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Homepage);
