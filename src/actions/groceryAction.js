@@ -9,3 +9,9 @@ export const removeItemFromGroceryAction = (data) => {
     dispatch({ type: 'REMOVE_GROCERY_ITEM' });
   };
 };
+
+export const selectGroceryItemAction = (data) => {
+  return (dispatch, getState) => {
+    dispatch({ type: 'SELECT_GROCERY_ITEM' });
+  };
+};

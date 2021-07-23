@@ -1,5 +1,5 @@
 const initState = {
-  cart: []
+  groceryList: []
 };
 
 const cartReducer = (state = initState, action) => {
@@ -7,17 +7,18 @@ const cartReducer = (state = initState, action) => {
     case 'ADD_ITEMS_TO_CART':
       return {
         ...state,
-        cart: [...state.cart, action.payload.result]
+        groceryList: [...action.payload.result]
       };
-    case 'REMOVE_ITEMS_FROM_CART':
-      let items = state.cart.filter((item) => item.item !== action.payload.item);
+    case 'REMOVE_ITEM_FROM_CART':
+      let items = state.groceryList.filter((item) => item.item !== action.payload.item);
       return {
         ...state,
-        cart: items
+        groceryList: items
       };
     default:
-      return;
+      break;
   }
+  return state;
 };
 
 export default cartReducer;

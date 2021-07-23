@@ -18,6 +18,11 @@ const groceryItemReducer = (state = initState, action) => {
         ...state,
         groceryList: items
       };
+    case 'SELECT_GROCERY_ITEM':
+      return {
+        ...state,
+        ...action.payload.groceryItem
+      };
     default:
       break;
   }

@@ -1,16 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import Card from "react-bootstrap/Card";
+import Card from 'react-bootstrap/Card';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import "./CardComponent.css";
+import './CardComponent.css';
 
 const CardComponent = (props) => {
   return (
     <Card bg={props.background} className="card">
       <Card.Header>
-        <Link to={props.link}>{props.header}</Link>
+        <Link to={props.link} onClick={props.click}>
+          {props.header}
+        </Link>
       </Card.Header>
       <Card.Body>{props.children}</Card.Body>
       <Card.Footer>

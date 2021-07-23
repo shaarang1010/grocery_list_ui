@@ -147,7 +147,7 @@ class GroceryList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    cartItems: state.cart.cart
+    cartItems: state.cart.groceryList
   };
 };
 

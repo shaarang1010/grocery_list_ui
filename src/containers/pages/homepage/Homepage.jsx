@@ -16,13 +16,16 @@ import { connect } from 'react-redux';
 
 import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
 
+import { selectGroceryItemAction } from '../../../actions/groceryAction';
+
 import './Homepage.css';
 
 class Homepage extends Component {
   constructor() {
     super();
     this.state = {
-      shoppingList: []
+      shoppingList: [],
+      isLoading: true
     };
   }
 
@@ -32,8 +35,11 @@ class Homepage extends Component {
       .get('../data/groceries_list.json')
       .then((response) => {
         const { data } = response;
-        this.setState({ shoppingList: data });
-        this.props.addToCart(data);
+        const elements = data.map((el) => {
+          return { ...el, name: this.createRandomName() };
+        });
+        this.props.addToCart(elements);
+        this.setState({ shoppingList: elements, isLoading: false });
       })
       .catch((err) => {
         console.log(err);
@@ -70,8 +76,11 @@ class Homepage extends Component {
     });
   };
 
+  _onClickHandler = (e) => {};
+
   render() {
-    const groceryList = this.state.shoppingList; //TODO: fetch groceries from state and then create cards
+    const groceryList = this.props.cartItems; //TODO: fetch groceries from state and then create cards
+    if (this.state.isLoading) return null;
     return (
       <Hoc>
         <Container>
@@ -84,7 +93,7 @@ class Homepage extends Component {
           </Row>
           <Row>
             {groceryList.map((item, index) => {
-              let randomName = this.createRandomName();
+              let randomName = item.name;
               let completedItems = item.items.filter((el) => el.completed === true);
               let incompleteItems = item.items.filter((el) => el.completed === false);
               return (
@@ -133,7 +142,7 @@ class Homepage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    cartItems: state.cart.cart
+    cartItems: state.cart.groceryList
   };
 };
 
