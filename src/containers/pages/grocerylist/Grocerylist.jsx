@@ -9,9 +9,10 @@ import { BsTrashFill, BsFillPlusSquareFill } from 'react-icons/bs';
 
 import { connect } from 'react-redux';
 
-import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
+import { addCartItemsAction } from '../../../actions/cartAction';
 
 import './GroceryList.css';
+import { selectGroceryItemAction } from '../../../actions/groceryAction';
 
 class GroceryList extends Component {
   constructor() {
@@ -19,18 +20,21 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
-      newGroceryItem: ''
+      newGroceryItem: null
     };
   }
 
   componentDidMount() {
+    console.log(this.props.cartItems);
     let id = this.props.match.params.id;
     // load json file
     axios
       .get('../data/groceries_list.json')
       .then((response) => {
         const { data } = response;
-        this.setState({ item: data.filter((el) => el.id === id)[0] });
+        let item = data.filter((el) => el.id === id)[0];
+        this.props.selectGroceryItem(item);
+        this.setState({ item });
       })
       .catch((err) => {
         console.log(err);
@@ -145,7 +149,7 @@ class GroceryList extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     cartItems: state.cart.groceryList
   };
@@ -154,8 +158,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (data) => dispatch(addCartItemsAction(data)),
-    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data))
+    selectGroceryItem: (data) => dispatch(selectGroceryItemAction(data))
   };
 };
 
-export default connect(mapDispatchToProps, mapStateToProps)(GroceryList);
+export default connect(mapDispatchToProps, null)(GroceryList);

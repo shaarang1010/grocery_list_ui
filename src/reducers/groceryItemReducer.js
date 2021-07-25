@@ -1,7 +1,8 @@
 const initState = {
   groceryList: [],
   groceryItemName: null,
-  groceryListDate: null
+  groceryListDate: null,
+  groceryId: null
 };
 
 const groceryItemReducer = (state = initState, action) => {
