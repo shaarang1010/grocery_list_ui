@@ -1,17 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
-import axios from 'axios';
-
 import { Row, Col, Jumbotron, Form, Container, ListGroup, Button } from 'react-bootstrap';
 import Hoc from '../../../components/hoc/Hoc';
-
 import { BsTrashFill, BsFillPlusSquareFill } from 'react-icons/bs';
-
 import { connect } from 'react-redux';
-
-import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
-
+import { addCartItemsAction } from '../../../actions/cartAction';
 import './GroceryList.css';
+import { selectGroceryItemAction } from '../../../actions/groceryAction';
 
 class GroceryList extends Component {
   constructor() {
@@ -19,22 +14,16 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
-      newGroceryItem: ''
+      newGroceryItem: null
     };
   }
 
   componentDidMount() {
     let id = this.props.match.params.id;
     // load json file
-    axios
-      .get('../data/groceries_list.json')
-      .then((response) => {
-        const { data } = response;
-        this.setState({ item: data.filter((el) => el.id === id)[0] });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    let { cartItems } = this.props;
+    console.log(cartItems);
+    this.props.selectGroceryItem(cartItems.groceryList[id]);
   }
 
   onCheckHandler = (params) => (e) => {
@@ -130,7 +119,6 @@ class GroceryList extends Component {
                       style={{ marginTop: '10px', marginLeft: '10px' }}
                       variant="outline-dark"
                       onClick={this.addItemHandler}
-                      disabled={this.state.newGroceryItem.length === 0}
                     >
                       <BsFillPlusSquareFill style={{ marginRight: '5px' }} /> Add
                     </Button>
@@ -145,17 +133,17 @@ class GroceryList extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
-    cartItems: state.cart.groceryList
+    cartItems: state.cart
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (data) => dispatch(addCartItemsAction(data)),
-    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data))
+    selectGroceryItem: (data) => dispatch(selectGroceryItemAction(data))
   };
 };
 
-export default connect(mapDispatchToProps, mapStateToProps)(GroceryList);
+export default connect(mapStateToProps, mapDispatchToProps)(GroceryList);

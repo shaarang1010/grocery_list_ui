@@ -16,8 +16,6 @@ import { connect } from 'react-redux';
 
 import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
 
-import { selectGroceryItemAction } from '../../../actions/groceryAction';
-
 import './Homepage.css';
 
 class Homepage extends Component {
