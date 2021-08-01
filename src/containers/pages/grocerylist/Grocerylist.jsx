@@ -22,7 +22,6 @@ class GroceryList extends Component {
     let id = this.props.match.params.id;
     // load json file
     let { cartItems } = this.props;
-    console.log(cartItems);
     this.props.selectGroceryItem(cartItems.groceryList[id]);
   }
 
@@ -49,7 +48,7 @@ class GroceryList extends Component {
   };
 
   addItemHandler = (e) => {
-    let { item } = this.state;
+    let { groceryItem } = this.props;
     let itemsList = [...item.items, { item: this.state.newGroceryItem, completed: false }];
     let updatedGroceryList = { ...item, items: itemsList };
     this.setState({ item: updatedGroceryList, newGroceryItem: '' });
@@ -73,8 +72,8 @@ class GroceryList extends Component {
           <Row>
             <Col xs={12} md={8}>
               <ListGroup variant="flush">
-                {this.state.item
-                  ? this.state.item.items.map((el, index) => {
+                {this.props.groceryItem
+                  ? this.props.groceryItem.groceryList.map((el, index) => {
                       return (
                         <ListGroup.Item key={index}>
                           <Col xs={10} md={6}>
@@ -135,7 +134,8 @@ class GroceryList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    cartItems: state.cart
+    cartItems: state.cart,
+    groceryItem: state.groceryItem
   };
 };
 
