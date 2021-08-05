@@ -14,7 +14,7 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
-      newGroceryItem: null
+      newGroceryItem: ''
     };
   }
 
@@ -49,12 +49,13 @@ class GroceryList extends Component {
 
   addItemHandler = (e) => {
     let { groceryItem } = this.props;
-    let itemsList = [...item.items, { item: this.state.newGroceryItem, completed: false }];
-    let updatedGroceryList = { ...item, items: itemsList };
+    let itemsList = [...groceryItem.items, { item: this.state.newGroceryItem, completed: false }];
+    let updatedGroceryList = { ...groceryItem.item, items: itemsList };
     this.setState({ item: updatedGroceryList, newGroceryItem: '' });
   };
 
   render() {
+    const { groceryList, groceryItemName, groceryListDate, groceryId } = this.props.groceryItem;
     return (
       <Hoc>
         <Jumbotron fluid>
@@ -66,14 +67,19 @@ class GroceryList extends Component {
         <Container>
           <Row>
             <Col xs={12} md={12}>
-              <Form.Control size="lg" type="value" ref={(listName) => (this.itemName = listName)} />
+              <Form.Control
+                size="lg"
+                type="value"
+                ref={(listName) => (this.itemName = listName)}
+                value={groceryItemName ? groceryItemName : ''}
+              />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={8}>
               <ListGroup variant="flush">
-                {this.props.groceryItem
-                  ? this.props.groceryItem.groceryList.map((el, index) => {
+                {groceryList
+                  ? groceryList.map((el, index) => {
                       return (
                         <ListGroup.Item key={index}>
                           <Col xs={10} md={6}>

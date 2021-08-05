@@ -21,8 +21,10 @@ const groceryItemReducer = (state = initState, action) => {
       };
     case 'SELECT_GROCERY_ITEM':
       return {
-        ...state,
-        ...action.payload.groceryItem
+        groceryList: action.payload.groceryList,
+        groceryItemName: action.payload.groceryItem,
+        groceryListDate: action.payload.groceryListDate,
+        groceryId: action.payload.groceryId
       };
     default:
       break;
