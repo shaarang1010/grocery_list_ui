@@ -14,7 +14,7 @@ export const selectGroceryItemAction = (data) => {
   return (dispatch, getState) => {
     dispatch({
       type: 'SELECT_GROCERY_ITEM',
-      payload: { groceryList: data.items, groceryItemName: data.name, groceryListData: data.date, groceryId: data.id }
+      payload: { groceryList: data.items, groceryItemName: data.name, groceryListDate: data.date, groceryId: data.id }
     });
   };
 };

@@ -14,7 +14,7 @@ class GroceryList extends Component {
     this.state = {
       id: null,
       item: null,
-      newGroceryItem: null
+      newGroceryItem: ''
     };
   }
 
@@ -22,7 +22,6 @@ class GroceryList extends Component {
     let id = this.props.match.params.id;
     // load json file
     let { cartItems } = this.props;
-    console.log(cartItems);
     this.props.selectGroceryItem(cartItems.groceryList[id]);
   }
 
@@ -49,13 +48,14 @@ class GroceryList extends Component {
   };
 
   addItemHandler = (e) => {
-    let { item } = this.state;
-    let itemsList = [...item.items, { item: this.state.newGroceryItem, completed: false }];
-    let updatedGroceryList = { ...item, items: itemsList };
+    let { groceryItem } = this.props;
+    let itemsList = [...groceryItem.items, { item: this.state.newGroceryItem, completed: false }];
+    let updatedGroceryList = { ...groceryItem.item, items: itemsList };
     this.setState({ item: updatedGroceryList, newGroceryItem: '' });
   };
 
   render() {
+    const { groceryList, groceryItemName, groceryListDate, groceryId } = this.props.groceryItem;
     return (
       <Hoc>
         <Jumbotron fluid>
@@ -67,14 +67,19 @@ class GroceryList extends Component {
         <Container>
           <Row>
             <Col xs={12} md={12}>
-              <Form.Control size="lg" type="value" ref={(listName) => (this.itemName = listName)} />
+              <Form.Control
+                size="lg"
+                type="value"
+                ref={(listName) => (this.itemName = listName)}
+                value={groceryItemName ? groceryItemName : ''}
+              />
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={8}>
               <ListGroup variant="flush">
-                {this.state.item
-                  ? this.state.item.items.map((el, index) => {
+                {groceryList
+                  ? groceryList.map((el, index) => {
                       return (
                         <ListGroup.Item key={index}>
                           <Col xs={10} md={6}>
@@ -135,7 +140,8 @@ class GroceryList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    cartItems: state.cart
+    cartItems: state.cart,
+    groceryItem: state.groceryItem
   };
 };
 
