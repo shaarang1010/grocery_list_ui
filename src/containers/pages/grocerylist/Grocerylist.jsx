@@ -22,7 +22,7 @@ class GroceryList extends Component {
     let id = this.props.match.params.id;
     // load json file
     let { cartItems } = this.props;
-    this.props.selectGroceryItem(cartItems.groceryList[id]);
+    this.props.selectGroceryItem(cartItems.groceryList[id - 1]);
   }
 
   onCheckHandler = (params) => (e) => {
