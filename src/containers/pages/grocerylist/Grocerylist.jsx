@@ -6,7 +6,7 @@ import { BsTrashFill, BsFillPlusSquareFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { addCartItemsAction } from '../../../actions/cartAction';
 import './GroceryList.css';
-import { selectGroceryItemAction } from '../../../actions/groceryAction';
+import { selectGroceryItemAction, updateGroceryCartItem } from '../../../actions/groceryAction';
 
 class GroceryList extends Component {
   constructor() {
@@ -25,13 +25,14 @@ class GroceryList extends Component {
     this.props.selectGroceryItem(cartItems.groceryList[id - 1]);
   }
 
-  onCheckHandler = (params) => (e) => {
+  onCheckHandler = (params, index) => (e) => {
     const element = document.getElementById(params);
     if (element.style.textDecoration === 'none') {
       element.style.textDecoration = 'line-through';
     } else {
       element.style.textDecoration = 'none';
     }
+    this.props.updateGroceryCartItem(index);
   };
 
   onDeleteElementHandler = (index) => (e) => {
@@ -86,7 +87,7 @@ class GroceryList extends Component {
                             <Form.Check
                               type="checkbox"
                               defaultChecked={el.completed}
-                              onChange={this.onCheckHandler(`${el.item}_${index}`)}
+                              onChange={this.onCheckHandler(`${el.item}_${index}`, index)}
                               id={el.item}
                               label={
                                 <h6
@@ -148,7 +149,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (data) => dispatch(addCartItemsAction(data)),
-    selectGroceryItem: (data) => dispatch(selectGroceryItemAction(data))
+    selectGroceryItem: (data) => dispatch(selectGroceryItemAction(data)),
+    updateGroceryCartItem: (data) => dispatch(updateGroceryCartItem(data))
   };
 };
 
