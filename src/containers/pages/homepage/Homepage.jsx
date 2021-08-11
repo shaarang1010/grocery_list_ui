@@ -59,7 +59,9 @@ class Homepage extends Component {
   };
 
   _sortByCompletedHandler = () => {
-    this.state.shoppingList.sort((a, b) => {});
+    this.state.shoppingList.sort((a, b) => {
+      return a.completed - b.completed;
+    });
   };
 
   _sortByNameHandler = () => {

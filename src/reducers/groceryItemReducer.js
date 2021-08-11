@@ -26,6 +26,13 @@ const groceryItemReducer = (state = initState, action) => {
         groceryListDate: action.payload.groceryListDate,
         groceryId: action.payload.groceryId
       };
+    case 'UPDATE_GROCERY_CART_ITEMS':
+      let item = state.groceryList[action.payload.itemIndex];
+      item = { ...item, completed: !item.completed };
+      return {
+        ...state,
+        groceryList: [...state.groceryList].splice(action.payload.itemIndex, 1, item)
+      };
     default:
       break;
   }

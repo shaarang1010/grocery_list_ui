@@ -18,3 +18,12 @@ export const selectGroceryItemAction = (data) => {
     });
   };
 };
+
+export const updateGroceryCartItem = (data) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: 'UPDATE_GROCERY_CART_ITEMS',
+      payload: { itemIndex: data }
+    });
+  };
+};
