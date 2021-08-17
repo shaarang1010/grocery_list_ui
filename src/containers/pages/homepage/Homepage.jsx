@@ -16,6 +16,8 @@ import { connect } from 'react-redux';
 
 import { addCartItemsAction, removeItemsFromCartAction } from '../../../actions/cartAction';
 
+import { addGroceryCartName } from '../../../actions/groceryAction';
+
 import './Homepage.css';
 
 class Homepage extends Component {
@@ -102,6 +104,7 @@ class Homepage extends Component {
                     header={randomName}
                     link={`/list/${item.id}`}
                     footerText={'Created on ' + new Date(item.date).toUTCString()}
+                    click={this.props.addGroceryCartName(randomName)}
                   >
                     <Accordion defaultActiveKey="1">
                       <Card>
@@ -149,7 +152,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (data) => dispatch(addCartItemsAction(data)),
-    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data))
+    removeFromCart: (data) => dispatch(removeItemsFromCartAction(data)),
+    addGroceryCartName: (data) => dispatch(addGroceryCartName(data))
   };
 };
 
