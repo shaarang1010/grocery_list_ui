@@ -21,17 +21,23 @@ const groceryItemReducer = (state = initState, action) => {
       };
     case 'SELECT_GROCERY_ITEM':
       return {
+        ...state,
         groceryList: action.payload.groceryList,
-        groceryItemName: action.payload.groceryItem,
         groceryListDate: action.payload.groceryListDate,
         groceryId: action.payload.groceryId
       };
     case 'UPDATE_GROCERY_CART_ITEMS':
-      let item = state.groceryList[action.payload.itemIndex];
-      item = { ...item, completed: !item.completed };
+      let groceryList = [...state.groceryList];
+      groceryList[action.payload.itemIndex].completed = !groceryList[action.payload.itemIndex].completed;
       return {
         ...state,
-        groceryList: [...state.groceryList].splice(action.payload.itemIndex, 1, item)
+        groceryList
+      };
+
+    case 'ADD_GROCERY_ITEM_NAME':
+      return {
+        ...state,
+        groceryItemName: action.payload.name
       };
     default:
       break;

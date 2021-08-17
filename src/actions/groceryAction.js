@@ -27,3 +27,9 @@ export const updateGroceryCartItem = (data) => {
     });
   };
 };
+
+export const addGroceryCartName = (data) => {
+  return (dispatch, getState) => {
+    dispatch({ type: 'ADD_GROCERY_ITEM_NAME', payload: { name: data } });
+  };
+};

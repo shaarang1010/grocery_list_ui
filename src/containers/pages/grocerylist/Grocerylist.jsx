@@ -56,7 +56,7 @@ class GroceryList extends Component {
   };
 
   render() {
-    const { groceryList, groceryItemName, groceryListDate, groceryId } = this.props.groceryItem;
+    const { groceryList, groceryItemName } = this.props.groceryItem;
     return (
       <Hoc>
         <Jumbotron fluid>
