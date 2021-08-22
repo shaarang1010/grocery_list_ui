@@ -6,7 +6,7 @@ import { BsTrashFill, BsFillPlusSquareFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { addCartItemsAction } from '../../../actions/cartAction';
 import './GroceryList.css';
-import { selectGroceryItemAction, updateGroceryCartItem } from '../../../actions/groceryAction';
+import { selectGroceryItemAction, updateGroceryCartItem, addItemToGroceryAction } from '../../../actions/groceryAction';
 
 class GroceryList extends Component {
   constructor() {
@@ -25,7 +25,7 @@ class GroceryList extends Component {
     this.props.selectGroceryItem(cartItems.groceryList[id - 1]);
   }
 
-  onCheckHandler = (params, index) => (e) => {
+  _onCheckHandler = (params, index) => (e) => {
     const element = document.getElementById(params);
     if (element.style.textDecoration === 'none') {
       element.style.textDecoration = 'line-through';
@@ -35,7 +35,7 @@ class GroceryList extends Component {
     this.props.updateGroceryCartItem(index);
   };
 
-  onDeleteElementHandler = (index) => (e) => {
+  _onDeleteElementHandler = (index) => (e) => {
     e.preventDefault();
     let { item } = this.state;
     let { items } = item;
@@ -44,15 +44,17 @@ class GroceryList extends Component {
     this.setState({ item });
   };
 
-  onChangeHandler = (e) => {
+  _onChangeHandler = (e) => {
     this.setState({ newGroceryItem: e.target.value });
   };
 
-  addItemHandler = (e) => {
-    let { groceryItem } = this.props;
-    let itemsList = [...groceryItem.items, { item: this.state.newGroceryItem, completed: false }];
-    let updatedGroceryList = { ...groceryItem.item, items: itemsList };
-    this.setState({ item: updatedGroceryList, newGroceryItem: '' });
+  _addItemHandler = (e) => {
+    let { addItemToGroceryAction } = this.props;
+    //let updatedGroceryList = { ...groceryItem, groceryList: itemsList };
+    let item = this.state.newGroceryItem;
+    this.setState({ newGroceryItem: '' }, () => {
+      addItemToGroceryAction({ item, completed: false });
+    });
   };
 
   render() {
@@ -87,7 +89,7 @@ class GroceryList extends Component {
                             <Form.Check
                               type="checkbox"
                               defaultChecked={el.completed}
-                              onChange={this.onCheckHandler(`${el.item}_${index}`, index)}
+                              onChange={this._onCheckHandler(`${el.item}_${index}`, index)}
                               id={el.item}
                               label={
                                 <h6
@@ -114,17 +116,17 @@ class GroceryList extends Component {
                       type="text"
                       placeholder="Add new item"
                       value={this.state.newGroceryItem}
-                      onChange={this.onChangeHandler}
+                      onChange={this._onChangeHandler}
                       style={{ border: '0', boxShadow: 'none' }}
                     />
                   </Col>
                 </ListGroup.Item>
                 <Row>
-                  <Col md={6} xs={6}>
+                  <Col md={8} xs={8}>
                     <Button
                       style={{ marginTop: '10px', marginLeft: '10px' }}
                       variant="outline-dark"
-                      onClick={this.addItemHandler}
+                      onClick={this._addItemHandler}
                     >
                       <BsFillPlusSquareFill style={{ marginRight: '5px' }} /> Add
                     </Button>
@@ -150,7 +152,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (data) => dispatch(addCartItemsAction(data)),
     selectGroceryItem: (data) => dispatch(selectGroceryItemAction(data)),
-    updateGroceryCartItem: (data) => dispatch(updateGroceryCartItem(data))
+    updateGroceryCartItem: (data) => dispatch(updateGroceryCartItem(data)),
+    addItemToGroceryAction: (data) => dispatch(addItemToGroceryAction(data))
   };
 };
 

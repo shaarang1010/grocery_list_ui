@@ -8,7 +8,7 @@ const initState = {
 const groceryItemReducer = (state = initState, action) => {
   switch (action.type) {
     case 'ADD_GROCERY_ITEM':
-      let newGroceryList = [...state.groceryList, action.payload.groceryItem];
+      let newGroceryList = [...state.groceryList, action.payload.list];
       return {
         ...state,
         groceryList: newGroceryList
